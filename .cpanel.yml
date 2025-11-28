@@ -1,0 +1,30 @@
+---
+deployment:
+  tasks:
+    # 1. Tentukan DEPLOYPATH. Sesuaikan dengan path server Anda!
+    # Biasanya, proyek Laravel diletakkan di luar public_html dan hanya tautan (symlink)
+    # atau file publiknya yang diarahkan ke public_html.
+    # Namun, di cPanel standar, seringkali semua file diletakkan di
+    # sub-folder di public_html.
+    - export DEPLOYPATH=/home/example/public_html/undangan-khitan/
+
+    # 2. Salin semua file dari repositori Git (termasuk .env.example) ke DEPLOYPATH.
+    - /bin/cp -R * $DEPLOYPATH
+
+    # 3. Pindah ke direktori deployment
+    - cd $DEPLOYPATH
+
+    # 4. Instal Dependensi Composer (jika folder vendor TIDAK termasuk dalam Git)
+    # Jika Anda menyertakan vendor/ dalam git add, Anda bisa menghapus baris ini.
+    # - /usr/local/bin/composer install --no-dev --prefer-dist
+
+    # 5. Atur permissions untuk folder storage
+    - /bin/chmod -R 775 storage bootstrap/cache
+
+    # 6. Jalankan Migrasi Database (Hanya jika ada perubahan skema database)
+    # JANGAN jalankan ini tanpa pengawasan jika di production!
+    # - /usr/local/bin/php artisan migrate --force
+
+    # 7. Optimalisasi Laravel
+    # - /usr/local/bin/php artisan config:cache
+    # - /usr/local/bin/php artisan view:cache
