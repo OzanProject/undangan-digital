@@ -1,47 +1,48 @@
-<p align="center">
-    <img src="https://via.placeholder.com/400x150?text=LOGO+UNDANGAN+KHITAN" width="400" alt="Logo Undangan Khitan">
-</p>
+## 🌟 Tentang Proyek: Undangan Khitan Digital
 
-<p align="center">
-    <a href="https://github.com/ozanproj/undangan-khitan/actions"><img src="https://github.com/ozanproj/undangan-khitan/workflows/tests/badge.svg" alt="Build Status"></a>
-    <a href="https://github.com/ozanproj/undangan-khitan/releases"><img src="https://img.shields.io/github/v/release/ozanproj/undangan-khitan" alt="Latest Stable Version"></a>
-    <a href="https://github.com/ozanproj/undangan-khitan/stargazers"><img src="https://img.shields.io/github/stars/ozanproj/undangan-khitan" alt="Stars"></a>
-</p>
+**Undangan Khitan Digital** adalah solusi *web-based* yang dikembangkan menggunakan **Laravel Framework** untuk memodernisasi proses pembuatan dan distribusi undangan acara Khitanan. Aplikasi ini menyediakan antarmuka administrasi yang *powerful* untuk mengelola detail acara, daftar tamu, dan kustomisasi tampilan, memberikan pengalaman yang **efisien** dan **estetis** bagi penyelenggara.
 
-## 💌 Tentang Proyek: Undangan Khitan Digital
+---
 
-Proyek **Undangan Khitan Digital** adalah sebuah platform berbasis web yang dikembangkan menggunakan framework Laravel. Tujuannya adalah untuk memudahkan pembuatan, pengelolaan, dan penyebaran undangan digital khusus acara Khitanan. Aplikasi ini dirancang untuk memberikan pengalaman yang elegan dan mudah digunakan bagi pengelola acara dan tamu undangan.
+## ✨ Fitur Utama (Core Features)
 
-### Fitur Utama Proyek
+Aplikasi ini mencakup modul-modul berikut untuk pengelolaan acara yang komprehensif:
 
-Berikut adalah beberapa fitur utama yang ditawarkan oleh aplikasi ini:
+* **Manajemen Tamu (Guest Management):** Implementasi **CRUD** (Create, Read, Update, Delete) penuh untuk pendaftaran tamu, *tracking* konfirmasi kehadiran (RSVP), dan manajemen data kontak.
+* **Kustomisasi Tampilan:** Sistem *templating* dinamis yang memungkinkan administrator untuk mengaplikasikan berbagai **tema**, mengunggah **aset visual**, dan menyematkan **musik latar** (MP3/WAV).
+* **Pengelolaan Aset Media:** Integrasi **Laravel Storage** untuk penanganan *file upload* dan *serving* aset digital secara aman dan terorganisir.
+* **Panel Administrasi:** Antarmuka *backend* yang intuitif untuk **konfigurasi acara** (tanggal, waktu, lokasi) dan pemantauan data.
+* **Ekspor Data Profesional:** Kemampuan untuk menghasilkan laporan daftar tamu dalam format **PDF** (didukung oleh `barryvdh/laravel-dompdf`) dan **Excel** untuk kebutuhan dokumentasi *offline*.
+* **Respons Tamu (RSVP):** Implementasi formulir RSVP sederhana untuk memfasilitasi konfirmasi kehadiran tamu secara *real-time*.
 
--   **Manajemen Tamu (Guest Management):** Fitur CRUD (Create, Read, Update, Delete) lengkap untuk mengelola daftar tamu undangan, termasuk nama, alamat, dan status konfirmasi kehadiran.
--   **Templating Undangan:** Sistem *view* yang memungkinkan kustomisasi tampilan undangan (tema, foto, musik latar).
--   **Manajemen File:** Integrasi dengan sistem *storage* Laravel untuk mengunggah dan mengelola aset media (foto, audio MP3).
--   **Konfigurasi Acara:** Pengaturan detail acara (tanggal, waktu, lokasi) melalui panel admin.
--   **Ekspor Data:** Kemampuan untuk mengekspor data tamu undangan ke format PDF atau Excel.
--   **Notifikasi & Konfirmasi:** Formulir RSVP (Konfirmasi Kehadiran) sederhana.
+---
 
-## 🚀 Persyaratan Sistem & Instalasi
+## ⚙️ Persyaratan Sistem & Instalasi
 
-Proyek ini dibangun di atas Laravel dan membutuhkan lingkungan sebagai berikut:
+Proyek ini memerlukan lingkungan *runtime* berikut:
 
--   **PHP:** Versi 8.1 atau yang lebih baru.
--   **Database:** MySQL/MariaDB (atau PostgreSQL, SQLite).
--   **Server:** Composer, Git, dan Node.js/NPM (untuk *frontend assets*).
+| Kategori | Persyaratan |
+| :--- | :--- |
+| **Backend** | **PHP 8.1** atau lebih tinggi |
+| **Framework** | Laravel 10.x atau 11.x |
+| **Database** | MySQL, MariaDB, PostgreSQL, atau SQLite |
+| **Dependensi** | Composer |
+| **Frontend** | Node.js (untuk kompilasi *asset* menggunakan Vite/Mix) |
 
-### Langkah Instalasi
+### Langkah Instalasi (Local Development)
+
+Ikuti langkah-langkah di bawah ini untuk menjalankan proyek di lingkungan lokal Anda:
 
 1.  **Kloning Repositori:**
     ```bash
     git clone [https://github.com/ozanproj/undangan-khitan.git](https://github.com/ozanproj/undangan-khitan.git)
     cd undangan-khitan
     ```
-2.  **Instal Dependensi:**
+2.  **Instal Dependensi PHP & JS:**
     ```bash
     composer install
-    npm install && npm run dev
+    npm install
+    npm run dev # Untuk kompilasi aset frontend
     ```
 3.  **Konfigurasi Lingkungan:**
     ```bash
@@ -49,25 +50,33 @@ Proyek ini dibangun di atas Laravel dan membutuhkan lingkungan sebagai berikut:
     php artisan key:generate
     ```
 4.  **Atur Database:**
-    Edit file `.env` untuk mengatur kredensial database Anda.
-5.  **Migrasi Database:**
+    Edit file `.env` untuk mengatur koneksi database (`DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`).
+5.  **Migrasi & Seeding:**
     ```bash
     php artisan migrate --seed
     ```
-    (Gunakan `--seed` jika ada data *dummy* awal yang disertakan.)
-6.  **Buat Symlink Storage (Hanya jika deployment mendukung symlink):**
+    (Perintah `--seed` menjalankan *seeder* database untuk data awal, termasuk data admin.)
+6.  **Buat Symlink Storage:**
     ```bash
     php artisan storage:link
     ```
+    (Langkah ini **wajib** jika Anda mengunggah dan menampilkan file media melalui *disk* `public` Laravel.)
 
-## 📧 Kontak dan Dukungan
+---
 
-Jika Anda memiliki pertanyaan, umpan balik, atau menemukan *bug*, silakan hubungi pengembang proyek:
+## 🤝 Kontribusi & Dukungan
 
--   **Pengembang:** Ozan Project
--   **Email:** ardiansyahdzan@gmail.com
--   **GitHub:** [Link ke Profil GitHub Anda]
+Kontribusi dari komunitas sangat kami hargai. Jika Anda menemukan *bug* atau memiliki saran fitur, silakan ajukan **Issue** atau buat **Pull Request** ke repositori ini.
 
-## 📜 Lisensi
+| Kategori | Detail Kontak |
+| :--- | :--- |
+| **Pengembang Utama** | **Ozan Project** |
+| **Email Kontak** | ardiansyahdzan@gmail.com |
+| **Dukungan** | Silakan ajukan Issue di GitHub |
+| **Apresiasi (Traktir Ngopi)** | https://saweria.co/ozanproject |
 
-Proyek ini adalah *software* sumber terbuka di bawah lisensi [MIT License](https://opensource.org/licenses/MIT).
+## ⚖️ Lisensi Proyek
+
+Kode sumber proyek **Undangan Khitan Digital** dilisensikan di bawah **MIT License**.
+
+[Link ke MIT License](https://opensource.org/licenses/MIT)
