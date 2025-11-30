@@ -40,27 +40,30 @@ Route::middleware(['auth', 'verified'])
     ->name('admin.') // Prefix nama route: admin.dashboard, admin.guests.index, dll
     ->group(function () {
 
-        // Dashboard Statistik
+        // 1. Dashboard Statistik
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        // Pengaturan Website
+        // 2. Pengaturan Website
         Route::controller(SettingController::class)->group(function () {
             Route::get('/settings', 'index')->name('settings');
             Route::post('/settings', 'update')->name('settings.update');
         });
 
-        // Manajemen Galeri
+        // 3. Manajemen Galeri
+        // (Hanya Index, Store, Destroy)
         Route::resource('galleries', GalleryController::class)
             ->except(['show', 'edit', 'update']);
 
-        // Manajemen Hiburan
+        // 4. Manajemen Hiburan (PERBAIKAN DISINI)
+        // Kita gunakan except('show') agar route 'edit' dan 'update' TERBUKA/AKTIF
         Route::resource('entertainments', EntertainmentController::class)
-            ->only(['index', 'store', 'destroy']);
+            ->except(['show']);
+
         // -----------------------------------------------------------
-        // MANAJEMEN TAMU (GUESTS)
+        // 5. MANAJEMEN TAMU (GUESTS)
         // -----------------------------------------------------------
         
-        // 1. Export Data (HARUS DIATAS RESOURCE)
+        // Export Data (HARUS DIATAS RESOURCE agar tidak tertimpa wildcard {id})
         Route::get('/guests/export/excel', [GuestController::class, 'exportExcel'])->name('guests.excel');
         Route::get('/guests/export/pdf', [GuestController::class, 'exportPdf'])->name('guests.pdf');
         
@@ -70,24 +73,27 @@ Route::middleware(['auth', 'verified'])
         // Import Action (POST)
         Route::post('/guests/import', [GuestController::class, 'importExcel'])->name('guests.import');
         
-        // 2. Link WhatsApp
+        // Link WhatsApp
         Route::get('/guests/{id}/wa', [GuestController::class, 'waLink'])->name('guests.wa');
 
-        // 3. CRUD Standar
+        // CRUD Standar Tamu
         Route::resource('guests', GuestController::class);
 
         // -----------------------------------------------------------
-        // MANAJEMEN UCAPAN (WISHES)
+        // 6. MANAJEMEN UCAPAN (WISHES)
         // -----------------------------------------------------------
 
-        // 1. Simpan Balasan Admin (Reply) - HARUS DIATAS RESOURCE
+        // Simpan Balasan Admin (Reply) - HARUS DIATAS RESOURCE
         Route::put('/wishes/{id}/reply', [WishController::class, 'reply'])->name('wishes.reply');
 
-        // 2. Resource (Hanya Index dan Hapus)
+        // Resource (Hanya Index dan Hapus)
         Route::resource('wishes', WishController::class)->only(['index', 'destroy']);
 
+        // -----------------------------------------------------------
+        // 7. MANAJEMEN USER (ADMIN)
+        // -----------------------------------------------------------
         Route::resource('users', UserController::class)
-        ->except(['show']);
+            ->except(['show']);
     });
 
 
