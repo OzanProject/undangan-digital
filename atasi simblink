@@ -1,0 +1,71 @@
+Halo\! Saya mengerti, Anda mencoba membuat symlink baru, tetapi Anda mendapatkan error: **`ln: failed to create symbolic link 'storage': File exists`**.
+
+Ini adalah kabar baik dan kabar buruk:
+
+  * **Kabar Baik:** Folder `storage` yang merupakan symlink **sudah ada** di dalam `public_html`.
+  * **Kabar Buruk:** Anda mendapatkan error **403 Forbidden** sebelumnya. Ini berarti symlink yang sudah ada itu **salah, rusak, atau diblokir** oleh *shared hosting* Anda.
+
+Karena Anda sebelumnya sudah mengonfirmasi bahwa symlink lama menunjuk ke jalur yang salah (`undangan-digital`):
+
+`storage -> /home/ozanproj/undangan-digital/storage/app/public`
+
+Kita harus **menghapus symlink yang salah** tersebut terlebih dahulu sebelum dapat membuat yang benar.
+
+-----
+
+## 🛠️ Langkah Perbaikan Symlink & Izin
+
+Anda berada di direktori yang tepat (`[ozanproj@garuda public_html]$`). Ikuti langkah-langkah di bawah ini untuk menghapus yang lama dan membuat yang baru dengan nama folder yang benar (`undangan-khitan`).
+
+### 1\. Hapus Symlink `storage` yang Salah
+
+Gunakan perintah `rm` (remove) untuk menghapus tautan simbolik yang ada. Ini aman karena hanya menghapus tautannya, bukan file aslinya.
+
+```bash
+[ozanproj@garuda public_html]$ rm storage
+```
+
+Perintah ini akan menghilangkan error **`File exists`**.
+
+-----
+
+### 2\. Buat Symlink Baru yang Benar
+
+Setelah tautan lama dihapus, buat symlink baru yang menunjuk ke folder proyek Anda yang sebenarnya, yaitu **`undangan-khitan`**.
+
+```bash
+[ozanproj@garuda public_html]$ ln -s ../undangan-khitan/storage/app/public storage
+```
+
+**Verifikasi:** Coba verifikasi dengan perintah `ls -l storage` lagi. Output harus menunjukkan:
+`storage -> ../undangan-khitan/storage/app/public`
+
+-----
+
+### 3\. Koreksi Izin File (Permission)
+
+Meskipun symlink sekarang benar, error 403 bisa tetap muncul jika izin pada folder **target** (`undangan-khitan/storage/app/public`) salah. Lakukan ini dari direktori induk (`~`).
+
+```bash
+# Pindah ke direktori home
+[ozanproj@garuda public_html]$ cd ..
+
+# A. Izin Direktori (755) & File (644)
+find undangan-khitan -type d -exec chmod 755 {} \;
+find undangan-khitan -type f -exec chmod 644 {} \;
+
+# B. Izin Writability (775) untuk Folder Storage Laravel
+chmod -R 775 undangan-khitan/storage
+chmod -R 775 undangan-khitan/bootstrap/cache
+```
+
+-----
+
+## 🎯 Langkah Selanjutnya
+
+Setelah Anda menyelesaikan ketiga langkah di atas, silakan:
+
+1.  Uji akses file media di browser Anda (misalnya, `https://ozanproject.site/storage/settings/9ujBesR0nMRPjIzVpTEoq8MQByDiH50sdnUaCV3d.jpg`).
+2.  Jika error **403 Forbidden** masih muncul, maka masalahnya adalah **Symlink Blocked** oleh host Anda, dan kita harus beralih ke solusi memindahkan file ke direktori publik nyata (Solusi Alternatif/Tahap 3).
+
+Silakan lanjutkan dengan **Langkah 1** dan **Langkah 2** terlebih dahulu, lalu beritahu saya hasilnya\!
